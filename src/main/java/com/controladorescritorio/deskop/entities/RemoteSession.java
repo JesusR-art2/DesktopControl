@@ -45,7 +45,7 @@ public class RemoteSession {
 
     private Integer avg_latency_ms;
 
-    private BigInteger bytes_transferred;
+    private Long bytes_transferred;
 
 
 }
