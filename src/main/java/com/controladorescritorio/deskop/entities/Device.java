@@ -29,6 +29,7 @@ public class Device {
 
     private String hostname;
 
+    @Column(nullable = false, name = "os")
     private String operatingSystem;
 
     private String os_version;

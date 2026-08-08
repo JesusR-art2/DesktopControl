@@ -33,7 +33,7 @@ CREATE TABLE device (
                          organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
                          device_code     VARCHAR(20) NOT NULL UNIQUE,   -- ID visible tipo "123 456 789"
                          hostname        VARCHAR(150),
-                         operatingSystem VARCHAR(50),                    -- windows / linux / macos
+                         os VARCHAR(50),                    -- windows / linux / macos
                          os_version      VARCHAR(50),
                          agent_version   VARCHAR(20),
                          public_key      TEXT NOT NULL,                  -- clave publica para cifrado de sesion
@@ -62,7 +62,7 @@ CREATE INDEX idx_access_token_device ON access_token(device_id);
 CREATE TABLE remote_session (
                                  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                                  device_id           UUID NOT NULL REFERENCES device(id) ON DELETE CASCADE,
-                                 technician_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                                 support_id       UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                                  connection_type     VARCHAR(20) NOT NULL DEFAULT 'P2P'
                                      CHECK (connection_type IN ('P2P', 'RELAY')),
                                  started_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -73,7 +73,7 @@ CREATE TABLE remote_session (
 );
 
 CREATE INDEX idx_session_device ON remote_session(device_id);
-CREATE INDEX idx_session_technician ON remote_session(technician_id);
+CREATE INDEX idx_session_technician ON remote_session(support_id);
 CREATE INDEX idx_session_started ON remote_session(started_at);
 
 -- Eventos dentro de una sesion (para auditoria fina, opcional en MVP)
